@@ -1,23 +1,17 @@
 class Solution {
     public int firstMissingPositive(int[] nums) {
-        int a = Arrays.stream(nums).max().orElse(0);
-        if (a < 1) {
-            return 1;
-        }
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (int i = 1; i <= a; i++) {
-            map.put(i, 0);
-        }
+        HashSet<Integer> set = new HashSet<>();
         for (int num : nums) {
-            if (map.containsKey(num)) {
-                map.put(num, 1);
+            if (num > 0) {
+                set.add(num);
             }
         }
-        for (int i = 1; i <= a; i++) {
-            if (map.get(i) == 0) {
+        int i = 1;
+        while (true) {
+            if (!set.contains(i)) {
                 return i;
             }
+            i++;
         }
-        return a + 1;
     }
 }
