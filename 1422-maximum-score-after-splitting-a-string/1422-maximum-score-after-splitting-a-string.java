@@ -1,24 +1,21 @@
 class Solution {
     public int maxScore(String s) {
-        int totalOnes = 0;
-        int zerosCount = 0;
-        int maxScore = 0;
-        for (char c : s.toCharArray()) {
-            if (c == '1') {
-                totalOnes++;
+        int ones = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '1') {
+                ones++;
             }
         }
-        int onesSeen = 0;
+        int ans = 0;
+        int zeros = 0;
         for (int i = 0; i < s.length() - 1; i++) {
-            if (s.charAt(i) == '0') {
-                zerosCount++;
+            if (s.charAt(i) == '1') {
+                ones--;
             } else {
-                onesSeen++;
-            }
-            int rightOnes = totalOnes - onesSeen;
-            int currentScore = zerosCount + rightOnes;
-            maxScore = Math.max(maxScore, currentScore);
+                zeros++;
+            } 
+            ans = Math.max(ans, zeros + ones);
         }
-        return maxScore;
+        return ans;
     }
 }
