@@ -3,18 +3,19 @@ class Solution {
         int[] ans=new int[nums.length];
         ArrayDeque<Integer> stack=new ArrayDeque<>();
         int N=nums.length;
-        for(int i=0;i<N;i++){
-            boolean flag=false;
-            for(int j=i+1;j<i+N;j++){
-                if(nums[i]<nums[j%N]){
-                    flag=true;
-                    ans[i]=nums[j%N];
-                    break;
+        for(int i=2*N-1;i>=0;i--){
+            while(!stack.isEmpty() && nums[i%N]>=stack.peek()){
+                stack.pop();
+            }
+            if(i<N){
+                if(stack.isEmpty()){
+                    ans[i%N]=-1;
+                }
+                else{
+                    ans[i%N]=stack.peek();
                 }
             }
-            if(!flag){
-                ans[i]=-1;
-            }
+            stack.push(nums[i%N]);
         }
         return ans;
     }
