@@ -1,39 +1,33 @@
 class Solution {
     public boolean isSafe(int row,int col,char[][] board){
-        //horizontal line
         for(int j=0;j<board.length;j++){
             if(board[row][j]=='Q'){
                 return false;
             }
         }
-        //vertical line
         for(int j=0;j<board[0].length;j++){
             if(board[j][col]=='Q'){
                 return false;
             }
         }
-        //upper left
         int r=row;
         for(int c=col;c>=0 && r>=0;c--,r--){
             if(board[r][c]=='Q'){
                 return false;
             }
         }
-        //upper right
         r=row;
         for(int c=col;c<board.length && r>=0;r--,c++){
             if(board[r][c]=='Q'){
                 return false;
             }
         }
-        //lower left
         r=row;
         for(int c=col;c>=0 && r<board.length;r++,c--){
             if(board[r][c]=='Q'){
                 return false;
             }
         }
-        //lower right
         r=row;
         for(int c=col;c<board.length && r<board.length;r++,c++){
             if(board[r][c]=='Q'){
