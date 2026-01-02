@@ -20,18 +20,21 @@ class Node {
 
 class Solution {
     public Node cloneGraph(Node node) {
-        HashMap<Node,Node> map=new HashMap<>();
-        return dfs(node,map);
-    }
-    static Node dfs(Node node,HashMap<Node,Node> map){
         if(node==null) return null;
-        if(map.containsKey(node)){
-            return map.get(node);
-        }
+        HashMap<Node,Node> map=new HashMap<>();
+        Queue<Node> que=new LinkedList<>();
         Node clone=new Node(node.val);
         map.put(node,clone);
-        for(Node neigh:node.neighbors){
-            clone.neighbors.add(dfs(neigh,map));
+        que.add(node);
+        while(!que.isEmpty()){
+            Node curr=que.poll();
+            for(Node neigh:curr.neighbors){
+                if(!map.containsKey(neigh)){
+                    map.put(neigh,new Node(neigh.val));
+                    que.add(neigh);
+                }
+                map.get(curr).neighbors.add(map.get(neigh));
+            }
         }
         return clone;
     }
