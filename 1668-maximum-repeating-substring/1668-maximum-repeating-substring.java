@@ -5,6 +5,7 @@ class Solution {
         int len=word.length();
         int i=0;
         int j=len;
+        int start=0;
         while(j<=sequence.length()){
             if(sequence.substring(i,j).equals(word)){
                 cnt++;
@@ -13,8 +14,9 @@ class Solution {
                 j+=len;
             }
             else{
+                start++;
                 cnt=0;
-                i++;
+                i=start;
                 j=i+len;
             }
         }
