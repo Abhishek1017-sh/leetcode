@@ -1,5 +1,5 @@
 class Solution {
-    int fun( int iq , int sum ,int i, int queries[][], int dp[][]){
+    static int fun( int iq , int sum ,int i, int queries[][], int dp[][]){
         if(sum==0){
             return iq;
         }
