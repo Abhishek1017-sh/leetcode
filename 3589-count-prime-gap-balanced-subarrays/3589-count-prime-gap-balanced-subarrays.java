@@ -1,45 +1,50 @@
 class Solution {
-    private boolean[] prime;
-    private void sieve(int n){
-        prime=new boolean[n+1];
-        Arrays.fill(prime,true); 
-        prime[1]=false;
-        for(int p=2;p*p<=n;p++){
-            if(prime[p]) {
-                for(int i=p*p;i<=n;i+=p) {
-                    prime[i]=false;
-                }
-            }
-        }
-    }
     public int primeSubarray(int[] nums, int k) {
-        int n=nums.length,max=0;
-        for(int num:nums) max=Math.max(max,num);
-        TreeMap<Integer,Integer> map=new TreeMap<>();
-        int primes=0,l1=0,l2=0;
-        sieve(max);
-        int cntK=0,cnt1=0;
-        for(int r=0;r<n;r++){
-            if(prime[nums[r]]){
-                primes++;
-                map.put(nums[r],map.getOrDefault(nums[r],0)+1); 
-            }
-            while(primes>1){
-                if(prime[nums[l1]]) primes--;
-                l1++;
-            }
-            while(!map.isEmpty()&&map.lastKey()-map.firstKey()>k){
-                if(prime[nums[l2]]){
-                    map.put(nums[l2],map.get(nums[l2])-1);
-                    if(map.get(nums[l2])==0) {
-                        map.remove(nums[l2]);
-                    }
+        int n=nums.length;
+        int prime=0;
+        int lastprime=-1;
+        int seclastprime=-1;
+        int i=0;
+        int ans=0;
+        Deque<Integer> min=new LinkedList<>();
+        Deque<Integer> max=new LinkedList<>();
+        for(int j=0;j<n;j++){
+            if(isPrime(nums[j])){
+                prime++;
+                seclastprime=lastprime;
+                lastprime=j;
+                while(!min.isEmpty() && min.peekLast()>nums[j]){
+                    min.pollLast();
                 }
-                l2++;
+                min.addLast(nums[j]);
+                while(!max.isEmpty() && max.peekLast()<nums[j]){
+                    max.pollLast();
+                }
+                max.addLast(nums[j]);
             }
-            cnt1+=(r-l1+1);
-            cntK+=(r-l2+1);
+            while(prime>0 && max.peekFirst()-min.peekFirst()>k){
+                if(isPrime(nums[i])){
+                    prime--;
+                    if(min.peekFirst()==nums[i]) min.pollFirst();
+                    if(max.peekFirst()==nums[i]) max.pollFirst();
+                }
+                i++;
+            }
+            if(prime>=2){
+                ans+=seclastprime-i+1;
+            }
         }
-        return cntK-cnt1;   
+        return ans;
+    }
+    static boolean isPrime(int n){
+        if(n<=1) return false;
+        if(n<=3) return true;
+        if(n%2==0 || n%3==0) return false;
+        for(int i=5;i*i<=n;i+=6){
+            if(n%i==0 || n%(i+2)==0){
+                return false;
+            }
+        }
+        return true;
     }
 }
