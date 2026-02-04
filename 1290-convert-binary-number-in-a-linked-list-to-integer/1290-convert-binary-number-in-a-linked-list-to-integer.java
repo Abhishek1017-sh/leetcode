@@ -9,26 +9,12 @@
  * }
  */
 class Solution {
-    static ListNode reverse(ListNode head){
-        ListNode prev=null;
-        ListNode curr=head;
-        while(curr!=null){
-            ListNode temp=curr.next;
-            curr.next=prev;
-            prev=curr;
-            curr=temp;
-        }
-        return prev;
-    }
     public int getDecimalValue(ListNode head) {
-        ListNode rev=reverse(head);
-        int num=0;
-        int c=0;
-        while(rev!=null){
-            num+=(int)rev.val*(Math.pow(2,c));
-            c++;
-            rev=rev.next;
+        StringBuilder sb=new StringBuilder();
+        while(head!=null){
+            sb.append(head.val);
+            head=head.next;
         }
-        return num;
+        return Integer.parseInt(sb.toString(),2);
     }
 }
