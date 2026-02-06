@@ -2,15 +2,14 @@ class Solution {
     public int totalSteps(int[] nums) {
         Stack<int[]> st = new Stack<>();
         int ans = 0;
-        for (int x : nums) {
-            int steps = 0;
-            while (!st.isEmpty() && st.peek()[0] <= x) {
-                steps = Math.max(steps, st.peek()[1]);
+        for(int i=nums.length-1;i>=0;i--){
+            int count=0;
+            while(!st.isEmpty() && nums[st.peek()[0]]<nums[i]){
+                count=Math.max(count+1,st.peek()[1]);
                 st.pop();
             }
-            if (!st.isEmpty()) steps++;
-            ans = Math.max(ans, steps);
-            st.push(new int[]{x, steps});
+            st.push(new int[]{i,count});
+            ans=Math.max(count,ans);
         }
         return ans;
     }
