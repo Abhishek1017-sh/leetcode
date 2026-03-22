@@ -1,39 +1,34 @@
 class Solution {
-    public boolean dfs(
-        int node,
-        int[][] adj,
-        boolean[] visit,
-        boolean[] inStack
-    ){
-        if (inStack[node]) {
-            return true;
-        }
-        if (visit[node]) {
-            return false;
-        }
-        visit[node] = true;
-        inStack[node] = true;
-        for (int neighbor : adj[node]) {
-            if (dfs(neighbor, adj, visit, inStack)) {
+    private boolean dfs(int node,int[][] graph,int[] vis,int[] pathvis,int[] check){
+        vis[node]=1;
+        pathvis[node]=1;
+        check[node]=0;
+        for(int nei:graph[node]){
+            if(vis[nei]==0){
+                if(dfs(nei,graph,vis,pathvis,check)==true) return true; 
+            }
+            else if(pathvis[nei]==1){
                 return true;
             }
         }
-        inStack[node] = false;
+        check[node]=1;
+        pathvis[node]=0;
         return false;
     }
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        int n = graph.length;
-        boolean[] visit = new boolean[n];
-        boolean[] inStack = new boolean[n];
-        for (int i = 0; i < n; i++) {
-            dfs(i, graph, visit, inStack);
-        }
-        List<Integer> safeNodes = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (!inStack[i]) {
-                safeNodes.add(i);
+        int n=graph.length;
+        int[] vis=new int[n];
+        int[] pathvis=new int[n];
+        int[] check=new int[n];
+        for(int i=0;i<n;i++){
+            if(vis[i]==0){
+                dfs(i,graph,vis,pathvis,check);
             }
         }
-        return safeNodes;
+        List<Integer> list=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(check[i]==1) list.add(i);
+        }
+        return list;
     }
 }
